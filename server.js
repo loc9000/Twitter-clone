@@ -10,29 +10,28 @@ const schema = require("./src/graphql/schema")
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "/templates/views"));
 
-// Middleware ex: app.use, next
-app.use((req, res, next) => {
-    console.log('Request made at ' + Date.now())
-    next()
-})
-
 dotenv.config()
 
 connectDB()
 
+require("./src/routes")(app)
 
-app.get('/', (req, res) => {
-    res.render('index')
-})
 // GraphQL middleware for testing
 app.use("/graphql", graphqlHTTP({
     schema,
     graphiql: true
 }))
-
-app.get('/profile', (req, res) => {
-    res.render('profile')
+app.use((req, res, next) => {
+    console.log('Request made at ' + Date.now())
+    next()
 })
+// app.get('/', (req, res) => {
+    //     res.render('index')
+    // })
+    
+// app.get('/profile', (req, res) => {
+//     res.render('profile')
+// })
 
 app.get('/login', (req, res) => {
     res.render('Login')

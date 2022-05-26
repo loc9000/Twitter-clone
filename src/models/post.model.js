@@ -12,7 +12,7 @@ const postSchema = mongoose.Schema(
             required: true
         },
         postId: {
-            type: String,
+            type: Number,
             required: true
         }
     },
