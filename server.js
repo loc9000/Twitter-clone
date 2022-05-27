@@ -14,36 +14,12 @@ dotenv.config()
 
 connectDB()
 
-require("./src/routes")(app)
-
-// GraphQL middleware for testing
 app.use("/graphql", graphqlHTTP({
     schema,
     graphiql: true
 }))
-app.use((req, res, next) => {
-    console.log('Request made at ' + Date.now())
-    next()
-})
-// app.get('/', (req, res) => {
-    //     res.render('index')
-    // })
-    
-// app.get('/profile', (req, res) => {
-//     res.render('profile')
-// })
 
-app.get('/login', (req, res) => {
-    res.render('Login')
-})
-
-app.get('/register', (req, res) => {
-    res.render('Register')
-})
-
-app.get('/user', (req, res) => {
-    res.render('user')
-})
+require("./src/routes")(app)
 
 app.listen(process.env.PORT, (req, res) => {
     console.log(`Twitta app running on port ${process.env.PORT}`)
