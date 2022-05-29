@@ -1,13 +1,14 @@
 const { GraphQLString, GraphQLInt } = require('graphql')
 const { User, Post } = require('../models')
+const createJwtToken = require("../util/auth")
+const { UserType, PostType } = require('./types')
 
 const register = {
     type: GraphQLString,
     args: {
         username: { type: GraphQLString },
         password: { type: GraphQLString },
-        email: { type: GraphQLString },
-        
+        email: { type: GraphQLString }
     }, 
     async resolve(parent, args) {
         const { username, password, email } = args
@@ -16,7 +17,8 @@ const register = {
 
         await user.save()
 
-        return 'User signed up'
+        const token = createJwtToken(user)
+        return token
 
     }
 }
@@ -40,4 +42,24 @@ const post = {
 
 }
 
-module.exports = { register, post }
+const login = {
+  type: GraphQLString,
+  args: {
+    email: { type: GraphQLString },
+    password: { type: GraphQLString },
+  },
+  async resolve(parent, args) {
+    const user = await User.findOne({ email: args.email });
+
+    if (!user || args.password !== user.password) {
+      throw new Error("Invalid credentials");
+    }
+
+    const token = createJwtToken(user);
+    return token;
+  },
+};
+
+
+
+module.exports = { register, post, login}

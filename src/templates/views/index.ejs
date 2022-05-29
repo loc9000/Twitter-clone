@@ -1,0 +1,31 @@
+<%- include('../partials/header.ejs')  %>
+
+<main class = "container">
+    <h2 class="my-4">Hello, <%= user.username %> </h1>
+    <p></p>
+    <div class="row">
+        <div class="form-group col-10">
+          <input type="text"
+            class="form-control" name="userInput" id="" aria-describedby="helpId" placeholder="What's on your mind? ">
+        </div>
+        <div class="col-2">
+            <button type="button" class="btn btn-primary btn-block">Post</button>
+        </div>
+    </div>
+    <hr>
+        <% for (const post of user.posts) { %>
+            <div class="card my-3">
+                <div class="card-body">
+                    <p class="card-title"> <%=post.body%></p>
+                    <a href="">
+                        <span class="card-text"> <%= post.author %> </span>
+                    </a>
+                    <span class = "float-right">
+                        <small>- a minute ago</small>
+                    </span>
+                </div>
+            </div>
+        <% } %>
+</main>
+
+<%- include('../partials/footer.ejs') %>
